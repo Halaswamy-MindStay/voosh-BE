@@ -6,7 +6,7 @@ const admin = require('../config/firebaseAdmin');
 // SignUp new user
 const userSignUp = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
-    console.log(req.body);
+
     if (!firstName || !email || !password) {
         return res.status(400).json({ error: 'Please enter all required fields' });
     }
@@ -29,7 +29,7 @@ const userSignUp = async (req, res) => {
 // Login existing user
 const userLogin = async (req, res) => {
     const { email, password } = req.body;
-    console.log(req.body);
+
     if (!email || !password) {
         return res.status(400).json({ error: 'Please enter all fields' });
     }
@@ -44,6 +44,22 @@ const userLogin = async (req, res) => {
         }
         const token = generateToken(user._id);
         res.status(201).json({ success: true, token, message: 'User Found', user });
+    } catch (err) {
+        res.status(500).json({ error: 'Error logging in' });
+    }
+}
+
+// Login existing users
+const usersData = async (req, res) => {
+
+    try {
+        const user = await User.findOne();
+        if (!user) {
+            return res.status(200).json({ message: 'User not found' });
+        }
+
+        res.status(201).json({ success: true, token, message: 'User Found', user });
+
     } catch (err) {
         res.status(500).json({ error: 'Error logging in' });
     }
@@ -78,4 +94,4 @@ const googleLogin = async (req, res) => {
     }
 }
 
-module.exports = { userLogin, userSignUp, googleLogin }
+module.exports = { userLogin, userSignUp, googleLogin,usersData }
