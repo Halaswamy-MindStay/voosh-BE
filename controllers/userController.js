@@ -53,12 +53,13 @@ const userLogin = async (req, res) => {
 const usersData = async (req, res) => {
 
     try {
-        const user = await User.findOne();
+        const user = await User.find();
+        console.log(user);
         if (!user) {
             return res.status(200).json({ message: 'User not found' });
         }
 
-        res.status(201).json({ success: true, token, message: 'User Found', user });
+        return res.status(200).json({ success: true, message: 'User Found', user });
 
     } catch (err) {
         res.status(500).json({ error: 'Error logging in' });
@@ -94,4 +95,4 @@ const googleLogin = async (req, res) => {
     }
 }
 
-module.exports = { userLogin, userSignUp, googleLogin,usersData }
+module.exports = { userLogin, userSignUp, googleLogin, usersData }
